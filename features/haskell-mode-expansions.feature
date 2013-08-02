@@ -72,6 +72,25 @@ Feature: haskell-mode expansions
     putStrLn "So long, and thanks for all the fish."
     """
 
+  Scenario: Mark multiline declaration body
+    Given I turn on haskell-mode
+    When I insert:
+    """
+    foo :: Int
+    foo = product [ 1
+                  , 2
+                  , 21
+                  ]
+    """
+    And I place the cursor before "product"
+    And I press "C-2 C-@"
+    Then the region should be:
+    """
+    product [ 1
+                  , 2
+                  , 21
+                  ]
+    """
 
   Scenario: Mark one line declaration completely
     Given I turn on haskell-mode
@@ -88,20 +107,24 @@ Feature: haskell-mode expansions
     foo = putStrLn "So long, and thanks for all the fish."
     """
 
-  Scenario: Mark multiline declaration body
+  Scenario: Mark declaration with type signature
     Given I turn on haskell-mode
     When I insert:
     """
+
+    foo :: Int
     foo = product [ 1
                   , 2
                   , 21
                   ]
+
     """
     And I place the cursor before "product"
-    And I press "C-2 C-@"
+    And I press "C-4 C-@"
     Then the region should be:
     """
-    product [ 1
+    foo :: Int
+    foo = product [ 1
                   , 2
                   , 21
                   ]

@@ -154,7 +154,7 @@
 ;;                 er/haskell-mark-declaration-right-before-where
 
 
-;;                 er/haskell-mark-declaration-with-type
+                 er/haskell-mark-declaration-with-type
                  mark-paragraph))))
 
 (er/enable-mode-expansions 'haskell-mode 'er/add-haskell-mode-expansions)
