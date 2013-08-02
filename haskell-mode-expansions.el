@@ -112,7 +112,7 @@
   "Go to the equals sign of the function declaration."
   (interactive)
   (haskell-ds-backward-decl)
-  (re-search-forward "=")
+  (re-search-forward " = ")
   (forward-sexp)
   (backward-sexp)
   (point))
