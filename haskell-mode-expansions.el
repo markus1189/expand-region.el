@@ -145,13 +145,13 @@
   "Add Haskell-specific expansions for buffers in haskell-mode."
   (set (make-local-variable 'er/try-expand-list)
        (append (remove 'er/mark-defun er/try-expand-list)
-               '(;;er/haskell-mark-where-clause-inner
-                   er/haskell-mark-where-clause
-                   er/haskell-mark-declaration-right
-                   er/haskell-mark-declaration
-;;                 er/haskell-mark-declaration-after-do-before-where
-;;                 er/haskell-mark-declaration-after-do
-;;                 er/haskell-mark-declaration-right-before-where
+               '(er/haskell-mark-where-clause-inner
+                 er/haskell-mark-where-clause
+                 er/haskell-mark-declaration-right
+                 er/haskell-mark-declaration
+;;               er/haskell-mark-declaration-after-do-before-where
+;;               er/haskell-mark-declaration-after-do
+;;               er/haskell-mark-declaration-right-before-where
 
 
                  er/haskell-mark-declaration-with-type

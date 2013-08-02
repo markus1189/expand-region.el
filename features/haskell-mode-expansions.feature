@@ -18,10 +18,18 @@ Feature: haskell-mode expansions
     And I press "C-2 C-@"
     Then the region should be:
     """
+
+      question = undefined
+      answer = show $ product [1 2 21]
+    """
+    And I press "C-@"
+    Then the region should be:
+    """
     where
       question = undefined
       answer = show $ product [1 2 21]
     """
+    
 
   Scenario: Mark one line `where' block
     Given I turn on haskell-mode
@@ -32,6 +40,11 @@ Feature: haskell-mode expansions
     """
     And I place the cursor before "answer"
     And I press "C-2 C-@"
+    Then the region should be:
+    """
+     answer = 42
+    """
+    And I press "C-@"
     Then the region should be:
     """
     where answer = 42
@@ -50,6 +63,15 @@ Feature: haskell-mode expansions
     """
     And I place the cursor before "b"
     And I press "C-2 C-@"
+    Then the region should be:
+    """
+
+        a = 1
+        b = 2
+
+        c = 3
+    """
+    And I press "C-@"
     Then the region should be:
     """
     where
