@@ -64,7 +64,6 @@
 (defun er/haskell-mark-declaration ()
   "Mark the complete declaration omitting the type annotation."
   (interactive)
-  (haskell-ds-backward-decl)
   (er/haskell-goto-declaration-equals)
   (beginning-of-line)
   (set-mark-command nil)
@@ -99,7 +98,7 @@
 (defun er/haskell-goto-end-of-indentation (goal-column)
   "Go down line until the indentation is less than (as GOAL-COLUMN)."
   (interactive)
-  (while (and (not (progn
+  (while (and (not (save-excursion
                      (end-of-line)
                      (eq (point) (point-max))))
               (or (>= (current-column) goal-column)
