@@ -20,23 +20,9 @@
 
 ;;; Commentary:
 
-
-;; Expansions:
-;;
-;;   er/haskell-mark-where-clause-inner
-;;   er/haskell-mark-where-clause
-;;   er/haskell-mark-declaration-after-do-before-where
-;;   er/haskell-mark-declaration-after-do
-;;   er/haskell-mark-declaration-right-before-where
-;;   er/haskell-mark-declaration-right
-;;   er/haskell-mark-declaration
-;;   er/haskell-mark-declaration-with-type
-;;
-
 ;;; Code:
 
 (require 'expand-region-core)
-
 (require 'haskell-decl-scan)
 
 (defun er/haskell-mark-declaration-right ()
@@ -47,17 +33,18 @@
   (er/haskell-goto-declaration-end)
   (exchange-point-and-mark))
 
-(defun er/haskell-mark-declaration-after-do ()
+(defun er/haskell-mark-do-body ()
   "Mark the body of a do block."
   (interactive)
   (er/haskell-goto-declaration-end)
   (set-mark-command nil)
-  (re-search-backward "\\bdo\\b"))
+  (re-search-backward "\\bdo\\b")
+  (forward-sexp))
 
-(defun er/haskell-mark-declaration-after-do-before-where ()
-  "Mark the body of a do but do block not including where clauses."
+(defun er/haskell-mark-do-body-before-where ()
+  "Mark the body of a do block but don't include where clauses."
   (interactive)
-  (er/haskell-mark-declaration-after-do)
+  (er/haskell-mark-do-body)
   (exchange-point-and-mark)
   (re-search-backward "where")
   (beginning-of-line)
@@ -147,13 +134,11 @@
        (append (remove 'er/mark-defun er/try-expand-list)
                '(er/haskell-mark-where-clause-inner
                  er/haskell-mark-where-clause
+                 er/haskell-mark-do-body-before-where
+                 er/haskell-mark-declaration-right-before-where
+                 er/haskell-mark-do-body
                  er/haskell-mark-declaration-right
                  er/haskell-mark-declaration
-;;               er/haskell-mark-declaration-after-do-before-where
-;;               er/haskell-mark-declaration-after-do
-;;               er/haskell-mark-declaration-right-before-where
-
-
                  er/haskell-mark-declaration-with-type
                  mark-paragraph))))
 

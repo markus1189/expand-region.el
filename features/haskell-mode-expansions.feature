@@ -29,7 +29,7 @@ Feature: haskell-mode expansions
       question = undefined
       answer = show $ product [1 2 21]
     """
-    
+
 
   Scenario: Mark one line `where' block
     Given I turn on haskell-mode
@@ -150,4 +150,37 @@ Feature: haskell-mode expansions
                   , 2
                   , 21
                   ]
+    """
+
+  Scenario: Mark declaration up to where clause
+    Given I turn on haskell-mode
+    When I insert:
+    """
+    foo = 42 * value
+      where value = 1
+    """
+    And I place the cursor before "42"
+    And I press "C-2 C-@"
+    Then the region should be:
+    """
+    42 * value
+    """
+
+  Scenario: Mark body of do syntax
+    Given I turn on haskell-mode
+    When I insert:
+    """
+    deepThink = do
+      putStrLn "The answer is..."
+      putStrLn answer
+      where
+        answer = "42"
+    """
+    And I place the cursor before "putStrLn"
+    And I press "C-2 C-@"
+    Then the region should be:
+    """
+
+      putStrLn "The answer is..."
+      putStrLn answer
     """
