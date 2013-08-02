@@ -152,6 +152,20 @@ Feature: haskell-mode expansions
                   ]
     """
 
+  Scenario: Ignore '=' in type signature
+    Given I turn on haskell-mode
+    When I insert:
+    """
+    foo :: Show a => a -> IO ()
+    foo x = print x
+    """
+    And I place the cursor before "print"
+    And I press "C-3 C-@"
+    Then the region should be:
+    """
+    foo x = print x
+    """
+
   Scenario: Mark declaration up to where clause
     Given I turn on haskell-mode
     When I insert:
