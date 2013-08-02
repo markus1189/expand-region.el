@@ -15,7 +15,7 @@ Feature: haskell-mode expansions
       answer = show $ product [1 2 21]
     """
     And I place the cursor before "question"
-    And I press "C-u 2 C-@"
+    And I press "C-2 C-@"
     Then the region should be:
     """
     where
@@ -31,7 +31,7 @@ Feature: haskell-mode expansions
     where answer = 42
     """
     And I place the cursor before "answer"
-    And I press "C-u 2 C-@"
+    And I press "C-2 C-@"
     Then the region should be:
     """
     where answer = 42
@@ -49,7 +49,7 @@ Feature: haskell-mode expansions
         c = 3
     """
     And I place the cursor before "b"
-    And I press "C-u 2 C-@"
+    And I press "C-2 C-@"
     Then the region should be:
     """
     where
@@ -57,4 +57,52 @@ Feature: haskell-mode expansions
         b = 2
 
         c = 3
+    """
+
+  Scenario: Mark one line declaration body
+    Given I turn on haskell-mode
+    When I insert:
+    """
+    foo = putStrLn "So long, and thanks for all the fish."
+    """
+    And I place the cursor before "putStrLn"
+    And I press "C-2 C-@"
+    Then the region should be:
+    """
+    putStrLn "So long, and thanks for all the fish."
+    """
+
+
+  Scenario: Mark one line declaration completely
+    Given I turn on haskell-mode
+    When I insert:
+    """
+
+    foo = putStrLn "So long, and thanks for all the fish."
+
+    """
+    And I place the cursor before "putStrLn"
+    And I press "C-u 3 C-@"
+    Then the region should be:
+    """
+    foo = putStrLn "So long, and thanks for all the fish."
+    """
+
+  Scenario: Mark multiline declaration body
+    Given I turn on haskell-mode
+    When I insert:
+    """
+    foo = product [ 1
+                  , 2
+                  , 21
+                  ]
+    """
+    And I place the cursor before "product"
+    And I press "C-2 C-@"
+    Then the region should be:
+    """
+    product [ 1
+                  , 2
+                  , 21
+                  ]
     """

@@ -36,6 +36,7 @@
 ;;; Code:
 
 (require 'expand-region-core)
+
 (require 'haskell-decl-scan)
 
 (defun er/haskell-mark-declaration-right ()
@@ -76,15 +77,12 @@
 (defun er/haskell-mark-declaration ()
   "Mark the complete declaration omitting the type annotation."
   (interactive)
-  (let ((start (haskell-ds-backward-decl))
-        (end (haskell-ds-forward-decl)))
-    (goto-char start)
-    (forward-line 1)
-    (beginning-of-line)
-    (set-mark-command nil)
-    (er/haskell-goto-declaration-end)
-    (setq deactivate-mark nil)
-    (exchange-point-and-mark)))
+  (haskell-ds-backward-decl)
+  (er/haskell-goto-declaration-equals)
+  (beginning-of-line)
+  (set-mark-command nil)
+  (er/haskell-goto-declaration-end)
+  (exchange-point-and-mark))
 
 (defun er/haskell-mark-declaration-with-type ()
   "Mark the complete declaration with the type annotation."
@@ -128,8 +126,6 @@
   "Go to the equals sign of the function declaration."
   (interactive)
   (haskell-ds-backward-decl)
-  (forward-line 1)
-  (beginning-of-line)
   (re-search-forward "=")
   (forward-sexp)
   (backward-sexp)
@@ -140,7 +136,8 @@
   (interactive)
   (haskell-ds-backward-decl)
   (forward-line 1)
-  (forward-char 1)
+  (when (not (eq (point) (point-max)))
+    (forward-char 1))
   (er/haskell-goto-end-of-indentation 1)
   (point))
 
@@ -150,11 +147,13 @@
        (append (remove 'er/mark-defun er/try-expand-list)
                '(;;er/haskell-mark-where-clause-inner
                    er/haskell-mark-where-clause
+                   er/haskell-mark-declaration-right
+                   er/haskell-mark-declaration
 ;;                 er/haskell-mark-declaration-after-do-before-where
 ;;                 er/haskell-mark-declaration-after-do
 ;;                 er/haskell-mark-declaration-right-before-where
-;;                 er/haskell-mark-declaration-right
-;;                 er/haskell-mark-declaration
+
+
 ;;                 er/haskell-mark-declaration-with-type
                  mark-paragraph))))
 
